@@ -8,22 +8,77 @@ To write a program to implement the K Means Clustering for Customer Segmentation
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. 
-2. 
-3. 
-4. 
+
+STEP 1: Start 
+
+STEP 2: Choose the number of clusters (K): Decide how many clusters you want to identify in your data. This is a hyperparameter that you need to set in advance.
+
+STEP 3:Initialize cluster centroids: Randomly select K data points from your dataset as the initial centroids of the clusters.
+
+STEP 4: Assign data points to clusters: Calculate the distance between each data point and each centroid. Assign each data point to the cluster with the closest centroid. This step is typically done using Euclidean distance, but other distance metrics can also be used.
+
+STEP 5:Update cluster centroids: Recalculate the centroid of each cluster by taking the mean of all the data points assigned to that cluster.
+
+STEP 6:Repeat steps 3 and 4: Iterate steps 3 and 4 until convergence. Convergence occurs when the assignments of data points to clusters no longer change or change very minimally.
+
+STEP 7:Evaluate the clustering results: Once convergence is reached, evaluate the quality of the clustering results. This can be done using various metrics such as the within-cluster sum of squares (WCSS), silhouette coefficient, or domain-specific evaluation criteria.
+
+STEP 8: Select the best clustering solution: If the evaluation metrics allow for it, you can compare the results of multiple clustering runs with different K values and select the one that best suits your requirements
+
+STEP 9: End
 
 ## Program:
-```
+```py
 /*
 Program to implement the K Means Clustering for Customer Segmentation.
-Developed by: 
-RegisterNumber:  
+Developed by: Gobathi P
+RegisterNumber: 212222080017
 */
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+data=pd.read_csv("Mall_Customers (1).csv")
+data.head()
+data.info()
+data.isnull().sum()
+from sklearn.cluster import KMeans
+wcss=[]
+for i in range (1,11):
+    kmeans=KMeans(n_clusters = i,init="k-means++")
+    kmeans.fit(data.iloc[:,3:])
+    wcss.append(kmeans.inertia_)
+plt.plot(range(1,11),wcss)
+plt.xlabel("No. of clusters")
+plt.ylabel("wcss")
+plt.title("Elbow matter")
+km=KMeans(n_clusters=5)
+km.fit(data.iloc[:,3:])
+
+y_pred=km.predict(data.iloc[:,3:])
+y_pred
+
+data["cluster"]=y_pred
+df0=data[data["cluster"]==0]
+df1=data[data["cluster"]==1]
+df2=data[data["cluster"]==2]
+df3=data[data["cluster"]==3]
+df4=data[data["cluster"]==4]
+plt.scatter(df0["Annual Income (k$)"],df0["Spending Score (1-100)"],c="red",label="cluster0")
+plt.scatter(df1["Annual Income (k$)"],df1["Spending Score (1-100)"],c="black",label="cluster1")
+plt.scatter(df2["Annual Income (k$)"],df2["Spending Score (1-100)"],c="blue",label="cluster2")
+plt.scatter(df3["Annual Income (k$)"],df3["Spending Score (1-100)"],c="green",label="cluster3")
+plt.scatter(df4["Annual Income (k$)"],df4["Spending Score (1-100)"],c="magenta",label="cluster4")
+plt.legend()
+plt.title("Customer Segmets")
 ```
 
 ## Output:
-![K Means Clustering for Customer Segmentation](sam.png)
+Elbow matter
+![image](https://github.com/user-attachments/assets/12f2107e-31ef-4b25-a68e-9a9693c25667)
+Customer Segment
+ ![image](https://github.com/user-attachments/assets/224e50db-882b-4aa7-ae15-3f8e9a066b23)
+
 
 
 ## Result:
